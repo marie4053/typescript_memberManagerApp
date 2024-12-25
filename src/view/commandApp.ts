@@ -1,6 +1,7 @@
 import reader from 'readline-sync';
 import Member from '../model/member';
-import { getMemberListAll } from '../modules/memberManagerApi';
+import runApp2 from './commandApp2';
+import { getMemberListAll, getMemberList } from '../modules/memberManagerApi';
 
 reader.setDefaultOptions({ encoding: 'utf8' });
 
@@ -22,6 +23,15 @@ function runApp(): void {
           console.log('비밀번호를 입력하세요');
           break;
         case 3: // 로그인 -> 로그인 되면 화면 달라짐..
+          const memberId = reader.question(`아이디를 입력하세요.\n> `);
+          const member = getMemberList(memberId);
+          const memberPassword = reader.question(`비밀번호를 입력하세요\n> `);
+          if (memberPassword !== member[0].password) {
+            console.log('로그인에 실패하였습니다.');
+            break;
+          }
+          console.log('로그인에 성공하였습니다.');
+          runApp2(member[0]);
           break;
         case 99:
           return;
@@ -45,8 +55,9 @@ function printMenu(): void {
 }
 
 function printMenu2(member: Member): void {
+  console.log('');
   console.log('<회원정보 관리 프로그램>');
-  console.log(`로그인이 되었습니다. (${member.memberId}, ${member.password})`);
+  console.log(`로그인이 되었습니다. (${member.memberId}, ${member.name})`);
   console.log('1. 회원정보 리스트 보기');
   console.log('2. 회원가입 하기');
   console.log('3. 로그인');
@@ -70,11 +81,13 @@ function showMemberList(memberList: Member[]): void {
   console.log(result);
 }
 
-function inputMemberInfo(): void {
-  const newMemberId = reader.question(`아이디를 입력하세요.\n> `);
-  if (newMemberId.length < 4) {
-    console.log();
-  }
-}
+// function inputMemberInfo(): void {
+//   const newMemberId = reader.question(`아이디를 입력하세요.\n> `);
+//   if (newMemberId.length < 4) {
+//     console.log('잘못된 입력입니다. 다시 입력하세요.');
+//     const newMemberId = reader.question(`> `);
+//   }
+
+// }
 
 export default runApp;

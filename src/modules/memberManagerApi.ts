@@ -15,7 +15,7 @@ const memberList: Member[] = [
   {
     mno: 2,
     memberId: 'test34',
-    password: '5688',
+    password: '5678',
     name: '박길동',
     age: 31,
     phone: null,
@@ -28,9 +28,10 @@ export function getMemberListAll(): Member[] {
   return memberList;
 }
 
-// export function getMemberList(no: number): Member | null {
-//   return memberList;
-// }
+export function getMemberList(memberId: string): Member[] {
+  const member = memberList.filter((member) => member.memberId == memberId);
+  return member;
+}
 
 export function createMemberList(newMember: Member): boolean {
   memberList.push(newMember);

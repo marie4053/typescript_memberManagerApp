@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getMemberListAll = getMemberListAll;
+exports.getMemberList = getMemberList;
 exports.createMemberList = createMemberList;
 exports.updateMemberList = updateMemberList;
 exports.deleteMemberList = deleteMemberList;
@@ -19,7 +20,7 @@ const memberList = [
     {
         mno: 2,
         memberId: 'test34',
-        password: '5688',
+        password: '5678',
         name: '박길동',
         age: 31,
         phone: null,
@@ -30,10 +31,12 @@ const memberList = [
 function getMemberListAll() {
     return memberList;
 }
-// export function getMemberList(no: number): Member | null {
-//   return memberList;
-// }
+function getMemberList(memberId) {
+    const member = memberList.filter((member) => member.memberId == memberId);
+    return member;
+}
 function createMemberList(newMember) {
+    memberList.push(newMember);
     return true;
 }
 function updateMemberList(no) {

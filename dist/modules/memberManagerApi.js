@@ -23,8 +23,6 @@ const memberList = [
         password: '5678',
         name: '박길동',
         age: 31,
-        phone: null,
-        hobby: null,
         createdDate: new Date(),
     },
 ];
@@ -36,6 +34,7 @@ function getMemberList(memberId) {
     return member;
 }
 function createMemberList(newMember) {
+    newMember.mno = memberList.length + 1;
     memberList.push(newMember);
     return true;
 }

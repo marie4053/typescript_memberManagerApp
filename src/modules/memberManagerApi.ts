@@ -18,8 +18,6 @@ const memberList: Member[] = [
     password: '5678',
     name: '박길동',
     age: 31,
-    phone: null,
-    hobby: null,
     createdDate: new Date(),
   },
 ];
@@ -34,6 +32,7 @@ export function getMemberList(memberId: string): Member[] {
 }
 
 export function createMemberList(newMember: Member): boolean {
+  newMember.mno = memberList.length + 1;
   memberList.push(newMember);
   return true;
 }

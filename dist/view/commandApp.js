@@ -32,8 +32,16 @@ function runApp() {
                         break;
                     }
                     console.log('로그인에 성공하였습니다.');
-                    (0, commandApp2_1.default)(member[0]);
-                    return;
+                    const result = (0, commandApp2_1.default)(member[0]);
+                    if (result === 2) {
+                        break;
+                    }
+                    if (result === 4) {
+                        break;
+                    }
+                    if (result === 99) {
+                        return;
+                    }
                 case 99:
                     return;
                 default:

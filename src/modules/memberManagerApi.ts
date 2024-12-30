@@ -41,6 +41,12 @@ export function updateMemberList(no: number): boolean {
   return true;
 }
 
-export function deleteMemberList(): boolean {
-  return true;
+export function deleteMemberList(memberId: string): boolean {
+  const index = memberList.findIndex((member) => member.memberId === memberId);
+  if (index !== -1) {
+    memberList.splice(index, 1);
+    return true;
+  } else {
+    return false;
+  }
 }

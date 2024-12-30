@@ -41,6 +41,13 @@ function createMemberList(newMember) {
 function updateMemberList(no) {
     return true;
 }
-function deleteMemberList() {
-    return true;
+function deleteMemberList(memberId) {
+    const index = memberList.findIndex((member) => member.memberId === memberId);
+    if (index !== -1) {
+        memberList.splice(index, 1);
+        return true;
+    }
+    else {
+        return false;
+    }
 }

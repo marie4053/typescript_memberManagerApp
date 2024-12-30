@@ -33,7 +33,7 @@ function runApp() {
                     }
                     console.log('로그인에 성공하였습니다.');
                     (0, commandApp2_1.default)(member[0]);
-                    break;
+                    return;
                 case 99:
                     return;
                 default:
@@ -73,46 +73,73 @@ function showMemberList(memberList) {
     console.log(result);
 }
 function inputMemberInfo() {
-    // 1) 아이디 입력받기
-    let newMemberId = readline_sync_1.default.question(`아이디를 입력하세요.\n> `);
-    if (newMemberId.length < 4) {
-        while (newMemberId.length < 4) {
-            console.log('잘못된 입력입니다. 다시 입력하세요.');
-            newMemberId = readline_sync_1.default.question(`> `);
+    try {
+        // 1) 아이디 입력받기
+        let newMemberId = readline_sync_1.default
+            .question(`아이디를 입력하세요.\n> `)
+            .trim();
+        if (newMemberId.length < 4) {
+            while (newMemberId.length < 4) {
+                console.log('아이디는 최소 4글자 이상이어야 합니다. 다시 입력하세요.');
+                newMemberId = readline_sync_1.default.question(`> `).trim();
+            }
+        }
+        // 2) 비밀번호 입력받기
+        let newMemberPassword = readline_sync_1.default
+            .question(`비밀번호를 입력하세요.\n> `)
+            .trim();
+        if (newMemberPassword.length < 4) {
+            while (newMemberPassword.length < 4) {
+                console.log('비밀번호는 최소 4글자 이상이어야 합니다. 다시 입력하세요.');
+                newMemberPassword = readline_sync_1.default.question(`> `).trim();
+            }
+        }
+        // 3) 이름 입력받기
+        let newMemberName = readline_sync_1.default
+            .question(`이름을 입력하세요.\n> `)
+            .trim();
+        if (newMemberName.length < 2) {
+            while (newMemberName.length < 2) {
+                console.log('이름은 최소 2글자 이상이어야 합니다. 다시 입력하세요.');
+                newMemberName = readline_sync_1.default.question(`> `).trim();
+            }
+        }
+        // 4) 나이 입력받기
+        let newMemberAge;
+        let ageInput = readline_sync_1.default.question(`나이를 입력하세요.\n> `).trim();
+        if (isNaN(Number(ageInput)) || Number(ageInput) < 0) {
+            while (isNaN(Number(ageInput)) || Number(ageInput) < 0) {
+                console.log('유효한 숫자를 입력하세요.');
+                ageInput = readline_sync_1.default.question(`> `).trim();
+            }
+        }
+        newMemberAge = parseInt(ageInput);
+        // 5) 전화번호 입력받기
+        let newMemberPhone = readline_sync_1.default.question(`전화번호를 입력하세요\n> `);
+        // 6) 취미 입력받기
+        let newMemberHobby = [readline_sync_1.default.question(`취미를 입력하세요.\n> `)];
+        // 7) Member 객체 생성
+        const newMember = {
+            mno: 0,
+            memberId: newMemberId,
+            password: newMemberPassword,
+            name: newMemberName,
+            age: newMemberAge,
+            phone: newMemberPhone,
+            hobby: newMemberHobby,
+            createdDate: new Date(),
+        };
+        // 8) 회원 등록 함수 호출
+        (0, memberManagerApi_1.createMemberList)(newMember);
+        console.log('회원가입이 완료 되었습니다.');
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.error('회원가입 도중 오류가 발생했습니다:', error.message);
+        }
+        else {
+            console.log('알 수 없는 에러:', error);
         }
     }
-    // 2) 비밀번호 입력받기
-    let newMemberPassword = readline_sync_1.default.question(`비밀번호를 입력하세요.\n> `);
-    if (newMemberPassword.length < 4) {
-        while (newMemberPassword.length < 4) {
-            console.log('잘못된 입력입니다. 다시 입력하세요.');
-            newMemberPassword = readline_sync_1.default.question(`> `);
-        }
-    }
-    // 3) 이름 입력받기
-    let newMemberName = readline_sync_1.default.question(`이름을 입력하세요.\n> `);
-    if (newMemberName.length < 2) {
-        while (newMemberName.length < 2) {
-            console.log('잘못된 입력입니다. 다시 입력하세요.');
-            newMemberName = readline_sync_1.default.question(`> `);
-        }
-    }
-    // 4) 나이 입력받기
-    let newMemberAge = parseInt(readline_sync_1.default.question(`나이를 입력하세요.\n> `));
-    // 5) 전화번호 입력받기
-    let newMemberPhone = readline_sync_1.default.question(`전화번호를 입력하세요\n> `);
-    // 6) 취미 입력받기
-    let newMemberHobby = [readline_sync_1.default.question(`취미를 입력하세요.\n> `)];
-    const newMember = {
-        mno: 0,
-        memberId: newMemberId,
-        password: newMemberPassword,
-        name: newMemberName,
-        age: newMemberAge,
-        phone: newMemberPhone,
-        hobby: newMemberHobby,
-        createdDate: new Date(),
-    };
-    (0, memberManagerApi_1.createMemberList)(newMember);
 }
 exports.default = runApp;

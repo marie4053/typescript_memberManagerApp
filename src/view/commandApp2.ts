@@ -1,6 +1,10 @@
 import reader from 'readline-sync';
 import Member from '../model/member';
-import { deleteMemberList } from '../modules/memberManagerApi';
+import {
+  getMemberListAll,
+  deleteMemberList,
+  updateMemberList,
+} from '../modules/memberManagerApi';
 
 reader.setDefaultOptions({ encoding: 'utf8' });
 
@@ -11,10 +15,20 @@ function runApp2(member: Member): number {
       const input = reader.question('> ');
       const menuNum = Number(input);
       switch (menuNum) {
+        case 1: // 회원정보 리스트 보기
+          console.log('<회원 목록>');
+          const memberList = getMemberListAll();
+          showMemberList(memberList);
+          break;
         case 2: // 로그아웃
           console.log(`${member.memberId}님이 로그아웃 하셨습니다.`);
           return 2;
         case 3: // 회원정보 수정하기
+          printUpdateMenu();
+          const updateNum = Number(reader.question('> '));
+          const newValue = reader.question(`새로운 값을 입력하세요\n> `);
+          updateMemberList(member.memberId, updateNum, newValue);
+          console.log('변경 되었습니다.');
           break;
         case 4: // 탈퇴하기
           console.log('<회원 탈퇴하기>');
@@ -41,14 +55,6 @@ function runApp2(member: Member): number {
   }
 }
 
-// function printMenu(): void {
-//   console.log('<회원정보 관리 프로그램>');
-//   console.log('1. 회원정보 리스트 보기');
-//   console.log('2. 회원가입 하기');
-//   console.log('3. 로그인');
-//   console.log('99. 종료하기');
-// }
-
 function printMenu2(member: Member): void {
   console.log('');
   console.log('<회원정보 관리 프로그램>');
@@ -60,18 +66,27 @@ function printMenu2(member: Member): void {
   console.log('99. 종료하기');
 }
 
-// function showMemberList(memberList: Member[]): void {
-//   const result = memberList
-//     .map(
-//       (member) =>
-//         `${member.mno}, ${member.memberId}, ${member.password}, ${
-//           member.name
-//         }, ${member.age}, ${member.phone}, [${
-//           member.hobby
-//         }], ${member.createdDate.toLocaleString()}\n`
-//     )
-//     .join('');
-//   console.log(result);
-// }
+function showMemberList(memberList: Member[]): void {
+  const result = memberList
+    .map(
+      (member) =>
+        `${member.mno}, ${member.memberId}, ${member.password}, ${
+          member.name
+        }, ${member.age}, ${member.phone}, [${
+          member.hobby
+        }], ${member.createdDate.toLocaleString()}\n`
+    )
+    .join('');
+  console.log(result);
+}
+
+function printUpdateMenu(): void {
+  console.log('<회원정보 수정>');
+  console.log('1. 비밀번호 변경');
+  console.log('2. 이름 변경');
+  console.log('3. 나이 변경');
+  console.log('4. 전화번호 변경');
+  console.log('5. 취미 변경');
+}
 
 export default runApp2;

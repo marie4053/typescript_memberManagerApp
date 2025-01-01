@@ -26,8 +26,11 @@ export function getMemberListAll(): Member[] {
   return memberList;
 }
 
-export function getMemberList(memberId: string): Member[] {
-  const member = memberList.filter((member) => member.memberId == memberId);
+export function getMemberList(memberId: string): Member {
+  const member = memberList.find((member) => member.memberId === memberId);
+  if (!member) {
+    throw new Error(`해당 아이디가 없습니다.`);
+  }
   return member;
 }
 
@@ -92,10 +95,6 @@ export function updateMemberList(
       console.log('유효하지 않은 선택입니다.');
       return false;
   }
-  // try {
-  // } catch (error) {
-  //   console.log(error);
-  // }
   return true;
 }
 

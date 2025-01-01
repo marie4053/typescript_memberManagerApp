@@ -11,7 +11,7 @@ reader.setDefaultOptions({ encoding: 'utf8' });
 function runApp2(member: Member): number {
   while (true) {
     try {
-      printMenu2(member);
+      printMenu(member);
       const input = reader.question('> ');
       const menuNum = Number(input);
       switch (menuNum) {
@@ -27,7 +27,10 @@ function runApp2(member: Member): number {
           printUpdateMenu();
           const updateNum = Number(reader.question('> '));
           const newValue = reader.question(`새로운 값을 입력하세요\n> `);
-          updateMemberList(member.memberId, updateNum, newValue);
+          const result = updateMemberList(member.memberId, updateNum, newValue);
+          if (result === false) {
+            break;
+          }
           console.log('변경 되었습니다.');
           break;
         case 4: // 탈퇴하기
@@ -55,7 +58,7 @@ function runApp2(member: Member): number {
   }
 }
 
-function printMenu2(member: Member): void {
+function printMenu(member: Member): void {
   console.log('');
   console.log('<회원정보 관리 프로그램>');
   console.log(`로그인이 되었습니다. (${member.memberId}, ${member.name})`);

@@ -29,8 +29,15 @@ const memberList = [
 function getMemberListAll() {
     return memberList;
 }
+// export function getMemberList(memberId: string): Member[] {
+//   const member = memberList.filter((member) => member.memberId == memberId);
+//   return member;
+// }
 function getMemberList(memberId) {
-    const member = memberList.filter((member) => member.memberId == memberId);
+    const member = memberList.find((member) => member.memberId === memberId);
+    if (!member) {
+        throw new Error(`해당 아이디가 없습니다.`);
+    }
     return member;
 }
 function createMemberList(newMember) {

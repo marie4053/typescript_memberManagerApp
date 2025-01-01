@@ -10,5 +10,3 @@ type Member = {
 };
 
 export default Member;
-
-// { mno, memberId, password, name, age, phone, hobby, createdDate }

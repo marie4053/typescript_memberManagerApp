@@ -24,24 +24,15 @@ function runApp() {
                     inputMemberInfo();
                     break;
                 case 3: // 로그인 -> 로그인 되면 화면 달라짐..
-                    const memberId = readline_sync_1.default.question(`아이디를 입력하세요.\n> `);
-                    const member = (0, memberManagerApi_1.getMemberList)(memberId);
-                    const memberPassword = readline_sync_1.default.question(`비밀번호를 입력하세요\n> `);
-                    if (memberPassword !== member[0].password) {
-                        console.log('로그인에 실패하였습니다.');
+                    const member = login();
+                    if (member === null) {
                         break;
                     }
-                    console.log('로그인에 성공하였습니다.');
-                    const result = (0, commandApp2_1.default)(member[0]);
-                    if (result === 2) {
-                        break;
-                    }
-                    if (result === 4) {
-                        break;
-                    }
+                    const result = (0, commandApp2_1.default)(member);
                     if (result === 99) {
                         return;
                     }
+                    break;
                 case 99:
                     return;
                 default:
@@ -60,18 +51,6 @@ function printMenu() {
     console.log('1. 회원정보 리스트 보기');
     console.log('2. 회원가입 하기');
     console.log('3. 로그인');
-    console.log('99. 종료하기');
-}
-function printMenu2(member) {
-    console.log('');
-    console.log('<회원정보 관리 프로그램>');
-    console.log(`로그인이 되었습니다. (${member.memberId}, ${member.name})`);
-    console.log('1. 회원정보 리스트 보기');
-    console.log('2. 회원가입 하기');
-    console.log('3. 로그인');
-    console.log('4. 로그아웃');
-    console.log('5. 회원정보 수정하기');
-    console.log('6. 탈퇴하기');
     console.log('99. 종료하기');
 }
 function showMemberList(memberList) {
@@ -148,6 +127,28 @@ function inputMemberInfo() {
         else {
             console.log('알 수 없는 에러:', error);
         }
+    }
+}
+function login() {
+    try {
+        const memberId = readline_sync_1.default.question(`아이디를 입력하세요.\n> `);
+        const member = (0, memberManagerApi_1.getMemberList)(memberId);
+        const password = readline_sync_1.default.question(`비밀번호를 입력하세요.\n> `);
+        if (password !== member.password) {
+            console.log('로그인에 실패하였습니다.');
+            return null;
+        }
+        console.log('로그인에 성공하였습니다.');
+        return member;
+    }
+    catch (error) {
+        if (error instanceof Error) {
+            console.log(error.message);
+        }
+        else {
+            console.log('알 수 없는 오류가 발생했습니다.');
+        }
+        return null;
     }
 }
 exports.default = runApp;

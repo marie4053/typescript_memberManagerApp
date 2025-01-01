@@ -9,7 +9,7 @@ readline_sync_1.default.setDefaultOptions({ encoding: 'utf8' });
 function runApp2(member) {
     while (true) {
         try {
-            printMenu2(member);
+            printMenu(member);
             const input = readline_sync_1.default.question('> ');
             const menuNum = Number(input);
             switch (menuNum) {
@@ -25,7 +25,11 @@ function runApp2(member) {
                     printUpdateMenu();
                     const updateNum = Number(readline_sync_1.default.question('> '));
                     const newValue = readline_sync_1.default.question(`새로운 값을 입력하세요\n> `);
-                    (0, memberManagerApi_1.updateMemberList)(member.memberId, updateNum, newValue);
+                    const result = (0, memberManagerApi_1.updateMemberList)(member.memberId, updateNum, newValue);
+                    if (result === false) {
+                        break;
+                    }
+                    console.log('변경 되었습니다.');
                     break;
                 case 4: // 탈퇴하기
                     console.log('<회원 탈퇴하기>');
@@ -53,7 +57,7 @@ function runApp2(member) {
         }
     }
 }
-function printMenu2(member) {
+function printMenu(member) {
     console.log('');
     console.log('<회원정보 관리 프로그램>');
     console.log(`로그인이 되었습니다. (${member.memberId}, ${member.name})`);
@@ -63,6 +67,12 @@ function printMenu2(member) {
     console.log('4. 탈퇴하기');
     console.log('99. 종료하기');
 }
+function showMemberList(memberList) {
+    const result = memberList
+        .map((member) => `${member.mno}, ${member.memberId}, ${member.password}, ${member.name}, ${member.age}, ${member.phone}, [${member.hobby}], ${member.createdDate.toLocaleString()}\n`)
+        .join('');
+    console.log(result);
+}
 function printUpdateMenu() {
     console.log('<회원정보 수정>');
     console.log('1. 비밀번호 변경');
@@ -70,11 +80,5 @@ function printUpdateMenu() {
     console.log('3. 나이 변경');
     console.log('4. 전화번호 변경');
     console.log('5. 취미 변경');
-}
-function showMemberList(memberList) {
-    const result = memberList
-        .map((member) => `${member.mno}, ${member.memberId}, ${member.password}, ${member.name}, ${member.age}, ${member.phone}, [${member.hobby}], ${member.createdDate.toLocaleString()}\n`)
-        .join('');
-    console.log(result);
 }
 exports.default = runApp2;
